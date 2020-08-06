@@ -37,7 +37,7 @@ class Solution:
         return orders
 
 
-# recrusion version
+# recursion version
 # class Solution:
 #     def inorderTraversal(self, root: TreeNode) -> List[int]:
 #         if root is None:
