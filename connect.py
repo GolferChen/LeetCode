@@ -73,6 +73,51 @@ class Node:
 
 
 # Not using queue, for general tree, self implemented
+# class Solution:
+#     def connect(self, root: 'Node') -> 'Node':
+#         if not root:
+#             return root
+#         root.next = None
+#         left_most_node = root
+#         continue_flag = True
+#         # while left_most_node.left or left_most_node.right:
+#         while continue_flag:
+#             continue_flag = False
+#             cur_node = left_most_node
+#             while cur_node:
+#                 # if cur_node.left is None and cur_node.right is None:
+#                 #     cur_node = cur_node.next
+#                 #     continue
+#                 if cur_node.left and cur_node.right:
+#                     cur_node.left.next = cur_node.right
+#                     node = cur_node.right
+#                 elif cur_node.left:
+#                     node = cur_node.left
+#                 elif cur_node.right:
+#                     node = cur_node.right
+#                 else:
+#                     cur_node = cur_node.next
+#                     continue
+#                 continue_flag = True
+#                 # node.next = self.get_next_left_most(cur_node.next) if cur_node.next else None
+#                 node.next = self.get_next_left_most(cur_node.next)
+#                 cur_node = cur_node.next
+#             left_most_node = self.get_next_left_most(left_most_node)
+#         return root
+#
+#     def get_next_left_most(self, left_most_node):
+#         if left_most_node is None:
+#             return left_most_node
+#         cur_node = left_most_node
+#         while cur_node:
+#             if cur_node.left:
+#                 return cur_node.left
+#             if cur_node.right:
+#                 return cur_node.right
+#             cur_node = cur_node.next
+#         return None
+
+# Not using queue, for general tree, self implemented. optimization
 class Solution:
     def connect(self, root: 'Node') -> 'Node':
         if not root:
@@ -80,40 +125,35 @@ class Solution:
         root.next = None
         left_most_node = root
         continue_flag = True
-        # while left_most_node.left or left_most_node.right:
         while continue_flag:
             continue_flag = False
             cur_node = left_most_node
+            left_most_node = None
+            pre_node = None
             while cur_node:
-                # if cur_node.left is None and cur_node.right is None:
-                #     cur_node = cur_node.next
-                #     continue
                 if cur_node.left and cur_node.right:
+                    if pre_node:
+                        pre_node.next = cur_node.left
                     cur_node.left.next = cur_node.right
-                    node = cur_node.right
+                    pre_node = cur_node.right
+                    if left_most_node is None:
+                        left_most_node = cur_node.left
                 elif cur_node.left:
-                    node = cur_node.left
+                    if pre_node:
+                        pre_node.next = cur_node.left
+                    pre_node = cur_node.left
+                    if left_most_node is None:
+                        left_most_node = cur_node.left
                 elif cur_node.right:
-                    node = cur_node.right
+                    if pre_node:
+                        pre_node.next = cur_node.right
+                    pre_node = cur_node.right
+                    if left_most_node is None:
+                        left_most_node = cur_node.right
                 else:
                     cur_node = cur_node.next
                     continue
                 continue_flag = True
-                # node.next = self.get_next_left_most(cur_node.next) if cur_node.next else None
-                node.next = self.get_next_left_most(cur_node.next)
                 cur_node = cur_node.next
-            left_most_node = self.get_next_left_most(left_most_node)
         return root
-
-    def get_next_left_most(self, left_most_node):
-        if left_most_node is None:
-            return left_most_node
-        cur_node = left_most_node
-        while cur_node:
-            if cur_node.left:
-                return cur_node.left
-            if cur_node.right:
-                return cur_node.right
-            cur_node = cur_node.next
-        return None
 
